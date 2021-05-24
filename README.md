@@ -4,6 +4,11 @@ meta-scikit-learn
 This layer contains recipes for building scikit-learn and depenencies in the
 OpenEmbedded build system.
 
+## Configurations Tested
+
+* armv8
+* armv7
+
 ## Dependencies
 
 This layer depends on:
