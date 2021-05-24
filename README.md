@@ -4,15 +4,11 @@ meta-scikit-learn
 This layer contains recipes for building scikit-learn and depenencies in the
 OpenEmbedded build system.
 
-
-
 ## Configurations Tested (zeus)
 
 The following target architectures have been tested using a x86_64 host PC (Ubuntu 18.04.5 LTS):
 
 - armv8;
-
-
 
 ## Dependencies
 
@@ -29,9 +25,9 @@ This layer depends on:
 ## Using this layer
 
 Clone this repository with the tag or branch corresponding to your OpenEmbedded
-version and add it to your workspace. For example, if using `gatesgarth`:
+version and add it to your workspace. For example, if using `zeus`:
 
-    git clone -b gatesgarth https://github.com/tuxable-ltd/meta-scikit-learn
+    git clone -b zeus https://github.com/tuxable-ltd/meta-scikit-learn
     bitbake-layers add-layer meta-scikit-learn
 
 You will also need to enable FORTRAN support by adding the following to your
