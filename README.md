@@ -4,6 +4,16 @@ meta-scikit-learn
 This layer contains recipes for building scikit-learn and depenencies in the
 OpenEmbedded build system.
 
+
+
+## Configurations Tested (zeus)
+
+The following target architectures have been tested using a x86_64 host PC (Ubuntu 18.04.5 LTS):
+
+- armv8;
+
+
+
 ## Dependencies
 
 This layer depends on:
