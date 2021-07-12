@@ -49,6 +49,7 @@ do_compile () {
         oe_runmake HOSTCC="${BUILD_CC}"                                         \
                                 CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS} ${@map_extra_options(d.getVar('TARGET_ARCH', True), d)}" \
                                 PREFIX=${exec_prefix} \
+                                CROSS=1 \
                                 CROSS_SUFFIX=${HOST_PREFIX} \
                                 NO_STATIC=1 NO_LAPACK=1 NO_LAPACKE=1 NO_CBLAS=1 NO_AFFINITY=1 USE_OPENMP=1 \
                                 BINARY='${@map_bits(d.getVar('TARGET_ARCH', True), d)}' \
@@ -59,6 +60,7 @@ do_install() {
         oe_runmake HOSTCC="${BUILD_CC}"                                         \
                                 CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}" \
                                 PREFIX=${exec_prefix} \
+                                CROSS=1 \
                                 CROSS_SUFFIX=${HOST_PREFIX} \
                                 NO_STATIC=1 NO_LAPACK=1 NO_LAPACKE=1 NO_CBLAS=1 NO_AFFINITY=1 USE_OPENMP=1 \
                                 BINARY='${@map_bits(d.getVar('TARGET_ARCH', True), d)}' \
