@@ -16,11 +16,11 @@ DEPENDS = "make libgfortran"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5adf4792c949a00013ce25d476a2abc0"
 
-SRC_URI = "https://github.com/xianyi/OpenBLAS/archive/v${PV}.tar.gz"
-SRC_URI[md5sum] = "4727a1333a380b67c8d7c7787a3d9c9a"
-SRC_URI[sha256sum] = "0484d275f87e9b8641ff2eecaa9df2830cbe276ac79ad80494822721de6e1693"
+SRC_URI = "git://github.com/xianyi/OpenBLAS.git;protocol=https;branch=develop"
 
-S = "${WORKDIR}/OpenBLAS-${PV}"
+SRCREV = "63b03efc2af332c88b86d4fd8079d00f4b439adf"
+
+S = "${WORKDIR}/git"
 
 def map_arch(a, d):
         import re
