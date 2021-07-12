@@ -1,5 +1,5 @@
 DEPENDS += "openblas"
-RDEPENDS_${PN} += "${PYTHON_PN}-multiprocessing"
+RDEPENDS_${PN} += "${PYTHON_PN}-multiprocessing openblas"
 
 do_compile_prepend() {
 	echo "[ALL]" > ${S}/site.cfg
