@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=c8d7e027b3e67a2b1fe7fe85ebeb17d7"
 SRC_URI = "git://github.com/scikit-learn/scikit-learn.git;branch=0.24.X \
            file://0001-hack-around-numpy-get_include-to-force-looking-in-ta.patch \
            "
-SRCREV = "c6512929fbee7232949c0f18cfb28cf3b5959df9"
+SRCREV = "15a949460dbf19e5e196b8ef48f9712b72a3b3c3"
 S = "${WORKDIR}/git"
 
 inherit setuptools3 pkgconfig
