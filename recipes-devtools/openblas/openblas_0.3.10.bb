@@ -12,7 +12,7 @@ HOMEPAGE = "http://www.openblas.net/"
 SECTION = "libs"
 LICENSE = "BSD-3-Clause"
 
-DEPENDS = "make libgfortran"
+DEPENDS = "make libgfortran patchelf-native"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5adf4792c949a00013ce25d476a2abc0"
 
@@ -72,8 +72,9 @@ do_install() {
         rm -rf ${D}${bindir}
 
         cd ${D}${libdir}
-        ln -s libopenblas*r*.so libblas.so
-        ln -s libopenblas*r*.so libblas.so.3
+        cp -ar libopenblas*r*.so libblas.so.3
+        patchelf --set-soname libblas.so.3 libblas.so.3
+        ln -s libblas.so.3 libblas.so
 }
 
 FILES_${PN} = "${libdir}/lib*"
