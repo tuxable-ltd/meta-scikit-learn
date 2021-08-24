@@ -18,9 +18,9 @@ export NPY_PKG_CONFIG_PATH = "${WORKDIR}/npy-pkg-config"
 export NUMPY_INCLUDE_PATH = "${STAGING_DIR_TARGET}/usr/lib/python3.9/site-packages/numpy/core/include"
 
 # Tell Numpy to look in target sysroot site-packages directory for libraries
-LDFLAGS_append = " -L${STAGING_LIBDIR}/${PYTHON_DIR}/site-packages/numpy/core/lib"
+LDFLAGS:append = " -L${STAGING_LIBDIR}/${PYTHON_DIR}/site-packages/numpy/core/lib"
 
-do_compile_prepend() {
+do_compile:prepend() {
 	echo "[ALL]" > ${S}/site.cfg
 	echo "library_dirs = ${STAGING_LIBDIR}" >> ${S}/site.cfg
 	echo "include_dirs = ${STAGING_INCDIR}" >> ${S}/site.cfg
@@ -32,4 +32,4 @@ do_compile_prepend() {
 }
 
 DEPENDS += "python3-numpy-native python3-scipy-native python3-cython-native python3-numpy python3-scipy python3-cython"
-RDEPENDS_${PN} += "python3-numpy python3-scipy python3-joblib python3-threadpoolctl python3-pytest"
+RDEPENDS:${PN} += "python3-numpy python3-scipy python3-joblib python3-threadpoolctl python3-pytest"

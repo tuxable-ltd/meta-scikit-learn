@@ -8,7 +8,7 @@ PYPI_PACKAGE = "joblib"
 
 SRC_URI[sha256sum] = "9c17567692206d2f3fb9ecf5e991084254fe631665c450b443761c4186a613f7"
 
-RDEPENDS_${PN} += "python3-pydoc"
+RDEPENDS:${PN} += "python3-pydoc"
 
 inherit pypi
 inherit setuptools3

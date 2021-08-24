@@ -77,8 +77,8 @@ do_install() {
         ln -s libblas.so.3 libblas.so
 }
 
-FILES_${PN} = "${libdir}/lib*"
-FILES_${PN}-dev = "${includedir} ${libdir}/lib${PN}.a ${libdir}/libblas.a ${libdir}/cmake ${libdir}/pkgconfig ${libdir}/libopenblas.so ${libdir}/libblas.so"
+FILES:${PN} = "${libdir}/lib*"
+FILES:${PN}-dev = "${includedir} ${libdir}/lib${PN}.a ${libdir}/libblas.a ${libdir}/cmake ${libdir}/pkgconfig ${libdir}/libopenblas.so ${libdir}/libblas.so"
 
-DEPENDS_remove_class-native = "libgfortran"
+DEPENDS:remove:class-native = "libgfortran"
 BBCLASSEXTEND = "native"

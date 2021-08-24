@@ -1,5 +1,5 @@
 DEPENDS += "openblas"
-DEPENDS_remove_class-native = "libgfortran"
+DEPENDS:remove:class-native = "libgfortran"
 
 EXTRA_OECMAKE += " -DUSE_OPTIMIZED_BLAS=1"
 
