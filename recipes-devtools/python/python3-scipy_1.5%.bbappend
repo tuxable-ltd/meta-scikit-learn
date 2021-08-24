@@ -1,7 +1,7 @@
 DEPENDS += "openblas"
-RDEPENDS_${PN} += "${PYTHON_PN}-multiprocessing"
+RDEPENDS:${PN} += "${PYTHON_PN}-multiprocessing openblas"
 
-do_compile_prepend() {
+do_compile:prepend() {
 	echo "[ALL]" > ${S}/site.cfg
 	echo "library_dirs = ${STAGING_LIBDIR}" >> ${S}/site.cfg
 	echo "include_dirs = ${STAGING_INCDIR}" >> ${S}/site.cfg
