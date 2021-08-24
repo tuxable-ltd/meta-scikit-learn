@@ -24,7 +24,7 @@ This layer depends on:
 ## Using this layer
 
 Clone this repository with the tag or branch corresponding to your OpenEmbedded
-version and add it to your workspace. For example, if using `gatesgarth`:
+version and add it to your workspace. For example:
 
     git clone -b master https://github.com/tuxable-ltd/meta-scikit-learn
     bitbake-layers add-layer meta-scikit-learn
