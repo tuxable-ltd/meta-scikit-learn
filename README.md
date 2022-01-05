@@ -1,5 +1,3 @@
-# CURRENTLY BROKEN - PATCHES WELCOME
-
 meta-scikit-learn
 =================
 
