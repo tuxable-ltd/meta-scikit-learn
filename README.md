@@ -10,11 +10,9 @@ This layer depends on:
 
 *  [meta-oe][]
 *  [meta-python][]
-*  [meta-scipy][]
 
 [meta-oe]: https://layers.openembedded.org/layerindex/branch/master/layer/meta-oe/
 [meta-python]: https://layers.openembedded.org/layerindex/branch/master/layer/meta-python/
-[meta-scipy]: https://github.com/gpanders/meta-scipy
 
 ## Using this layer
 
