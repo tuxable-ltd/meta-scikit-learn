@@ -12,15 +12,15 @@ HOMEPAGE = "http://www.openblas.net/"
 SECTION = "libs"
 LICENSE = "BSD-3-Clause"
 
-DEPENDS = "make libgfortran"
+DEPENDS = "make libgfortran patchelf-native"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5adf4792c949a00013ce25d476a2abc0"
 
-SRC_URI = "https://github.com/xianyi/OpenBLAS/archive/v${PV}.tar.gz"
-SRC_URI[md5sum] = "4727a1333a380b67c8d7c7787a3d9c9a"
-SRC_URI[sha256sum] = "0484d275f87e9b8641ff2eecaa9df2830cbe276ac79ad80494822721de6e1693"
+SRC_URI = "git://github.com/xianyi/OpenBLAS.git;protocol=https;branch=develop"
 
-S = "${WORKDIR}/OpenBLAS-${PV}"
+SRCREV = "fab746240cc7e95569fde23af8942f8bc97d6d40"
+
+S = "${WORKDIR}/git"
 
 def map_arch(a, d):
         import re
@@ -49,6 +49,7 @@ do_compile () {
         oe_runmake HOSTCC="${BUILD_CC}"                                         \
                                 CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS} ${@map_extra_options(d.getVar('TARGET_ARCH', True), d)}" \
                                 PREFIX=${exec_prefix} \
+                                CROSS=1 \
                                 CROSS_SUFFIX=${HOST_PREFIX} \
                                 NO_STATIC=1 NO_LAPACK=1 NO_LAPACKE=1 NO_CBLAS=1 NO_AFFINITY=1 USE_OPENMP=1 \
                                 BINARY='${@map_bits(d.getVar('TARGET_ARCH', True), d)}' \
@@ -59,6 +60,7 @@ do_install() {
         oe_runmake HOSTCC="${BUILD_CC}"                                         \
                                 CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}" \
                                 PREFIX=${exec_prefix} \
+                                CROSS=1 \
                                 CROSS_SUFFIX=${HOST_PREFIX} \
                                 NO_STATIC=1 NO_LAPACK=1 NO_LAPACKE=1 NO_CBLAS=1 NO_AFFINITY=1 USE_OPENMP=1 \
                                 BINARY='${@map_bits(d.getVar('TARGET_ARCH', True), d)}' \
@@ -70,8 +72,9 @@ do_install() {
         rm -rf ${D}${bindir}
 
         cd ${D}${libdir}
-        ln -s libopenblas*r*.so libblas.so
-        ln -s libopenblas*r*.so libblas.so.3
+        cp -ar libopenblas*r*.so libblas.so.3
+        patchelf --set-soname libblas.so.3 libblas.so.3
+        ln -s libblas.so.3 libblas.so
 }
 
 FILES_${PN} = "${libdir}/lib*"
