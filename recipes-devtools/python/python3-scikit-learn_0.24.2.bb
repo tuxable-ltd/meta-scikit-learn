@@ -10,12 +10,12 @@ SRC_URI = "git://github.com/scikit-learn/scikit-learn.git;branch=0.24.X \
 SRCREV = "15a949460dbf19e5e196b8ef48f9712b72a3b3c3"
 S = "${WORKDIR}/git"
 
-inherit setuptools3 pkgconfig
+inherit setuptools3 pkgconfig python3-dir
 
 export PYTHON_CROSSENV = "1"
 export SKLEARN_BUILD_PARALLEL = "${@oe.utils.cpu_count()}"
 export NPY_PKG_CONFIG_PATH = "${WORKDIR}/npy-pkg-config"
-export NUMPY_INCLUDE_PATH = "${STAGING_DIR_TARGET}/usr/lib/python3.9/site-packages/numpy/core/include"
+export NUMPY_INCLUDE_PATH = "${STAGING_DIR_TARGET}/usr/lib/python${PYTHON_BASEVERSION}/site-packages/numpy/core/include"
 
 # Tell Numpy to look in target sysroot site-packages directory for libraries
 LDFLAGS:append = " -L${STAGING_LIBDIR}/${PYTHON_DIR}/site-packages/numpy/core/lib"
@@ -26,9 +26,9 @@ do_compile:prepend() {
 	echo "include_dirs = ${STAGING_INCDIR}" >> ${S}/site.cfg
 
 	mkdir -p ${WORKDIR}/npy-pkg-config
-	cp ${STAGING_DIR_TARGET}/usr/lib/python3.9/site-packages/numpy/core/lib/npy-pkg-config/* ${WORKDIR}/npy-pkg-config
-	sed -i 's&prefix=${pkgdir}&prefix=${STAGING_DIR_TARGET}/usr/lib/python3.9/site-packages/numpy/core&g' ${WORKDIR}/npy-pkg-config/npymath.ini
-	sed -i 's&prefix=${pkgdir}&prefix=${STAGING_DIR_TARGET}/usr/lib/python3.9/site-packages/numpy/core&g' ${WORKDIR}/npy-pkg-config/mlib.ini
+	cp ${STAGING_DIR_TARGET}/usr/lib/python${PYTHON_BASEVERSION}/site-packages/numpy/core/lib/npy-pkg-config/* ${WORKDIR}/npy-pkg-config
+	sed -i 's&prefix=${pkgdir}&prefix=${STAGING_DIR_TARGET}/usr/lib/python${PYTHON_BASEVERSION}/site-packages/numpy/core&g' ${WORKDIR}/npy-pkg-config/npymath.ini
+	sed -i 's&prefix=${pkgdir}&prefix=${STAGING_DIR_TARGET}/usr/lib/python${PYTHON_BASEVERSION}/site-packages/numpy/core&g' ${WORKDIR}/npy-pkg-config/mlib.ini
 }
 
 DEPENDS += "python3-numpy-native python3-scipy-native python3-cython-native python3-numpy python3-scipy python3-cython"
