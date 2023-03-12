@@ -22,13 +22,19 @@ SRCREV = "fab746240cc7e95569fde23af8942f8bc97d6d40"
 
 S = "${WORKDIR}/git"
 
+# Used for TARGET=... , documented in TargetList.txt
+BLAS_X86_ARCH ?= "ATOM"
+BLAS_AARCH32_ARCH ?= "CORTEXA9"
+BLAS_AARCH64_ARCH ?= "ARMV8"
+BLAS_ARM_ARCH ?= "ARMV7"
+
 def map_arch(a, d):
         import re
-        if re.match('i.86$', a): return 'ATOM'
-        elif re.match('x86_64$', a): return 'ATOM'
-        elif re.match('aarch32$', a): return 'CORTEXA9'
-        elif re.match('aarch64$', a): return 'ARMV8'
-        elif re.match('arm$', a): return 'ARMV7'
+        if re.match('i.86$', a): return d.getVar('BLAS_X86_ARCH')
+        elif re.match('x86_64$', a): return d.getVar('BLAS_X86_ARCH')
+        elif re.match('aarch32$', a): return d.getVar('BLAS_AARCH32_ARCH')
+        elif re.match('aarch64$', a): return d.getVar('BLAS_AARCH64_ARCH')
+        elif re.match('arm$', a): return d.getVar('BLAS_ARM_ARCH')
         return a
 
 def map_bits(a, d):
@@ -45,13 +51,28 @@ def map_extra_options(a, d):
         if re.match('arm$', a): return '-mfpu=neon-vfpv4 -mfloat-abi=hard'
         return ''
 
+PACKAGECONFIG[lapack] = ""
+PACKAGECONFIG[lapacke] = ""
+PACKAGECONFIG[cblas] = ""
+PACKAGECONFIG[affinity] = ""
+PACKAGECONFIG[openmp] = ""
+PACKAGECONFIG[dynarch] = ""
+
+PACKAGECONFIG ??= "openmp"
+
 do_compile () {
         oe_runmake HOSTCC="${BUILD_CC}"                                         \
                                 CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS} ${@map_extra_options(d.getVar('TARGET_ARCH', True), d)}" \
                                 PREFIX=${exec_prefix} \
                                 CROSS=1 \
                                 CROSS_SUFFIX=${HOST_PREFIX} \
-                                NO_STATIC=1 NO_LAPACK=1 NO_LAPACKE=1 NO_CBLAS=1 NO_AFFINITY=1 USE_OPENMP=1 \
+                                NO_STATIC=1 \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'lapack', 'NO_LAPACK=0', 'NO_LAPACK=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'lapacke', 'NO_LAPACKE=0', 'NO_LAPACKE=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'cblas', 'NO_CBLAS=0', 'NO_CBLAS=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'affinity', 'NO_AFFINITY=0', 'NO_AFFINITY=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'openmp', 'USE_OPENMP=1', 'USE_OPENMP=0', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'dynarch', 'DYNAMIC_ARCH=1', 'DYNAMIC_ARCH=0', d)} \
                                 BINARY='${@map_bits(d.getVar('TARGET_ARCH', True), d)}' \
                                 TARGET='${@map_arch(d.getVar('TARGET_ARCH', True), d)}'
 }
@@ -62,7 +83,13 @@ do_install() {
                                 PREFIX=${exec_prefix} \
                                 CROSS=1 \
                                 CROSS_SUFFIX=${HOST_PREFIX} \
-                                NO_STATIC=1 NO_LAPACK=1 NO_LAPACKE=1 NO_CBLAS=1 NO_AFFINITY=1 USE_OPENMP=1 \
+                                NO_STATIC=1 \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'lapack', 'NO_LAPACK=0', 'NO_LAPACK=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'lapacke', 'NO_LAPACKE=0', 'NO_LAPACKE=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'cblas', 'NO_CBLAS=0', 'NO_CBLAS=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'affinity', 'NO_AFFINITY=0', 'NO_AFFINITY=1', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'openmp', 'USE_OPENMP=1', 'USE_OPENMP=0', d)} \
+                                ${@bb.utils.contains('PACKAGECONFIG', 'dynarch', 'DYNAMIC_ARCH=1', 'DYNAMIC_ARCH=0', d)} \
                                 BINARY='${@map_bits(d.getVar('TARGET_ARCH', True), d)}' \
                                 TARGET='${@map_arch(d.getVar('TARGET_ARCH', True), d)}' \
                                 DESTDIR=${D} \
